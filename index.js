@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 const corsOptions = {
-    origin: 'http://localhost:3000', // Permitir solicitudes solo desde este origen
+    origin: 'http://localhost:3000', 
     optionsSuccessStatus: 200 
 };
 
