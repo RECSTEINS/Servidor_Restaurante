@@ -9,7 +9,7 @@ app.use(express.urlencoded({extended: true}));
 
 const corsOptions = {
     origin: 'http://localhost:3000', // Permitir solicitudes solo desde este origen
-    optionsSuccessStatus: 200 // Algunos navegadores antiguos no entienden el código de estado 204
+    optionsSuccessStatus: 200 
 };
 
 app.use(cors(corsOptions));
