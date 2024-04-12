@@ -6,7 +6,19 @@ dotenv.config();
 const {connection}= require ("../config/config.db");
 
 const getEmpleados= (request, response) => {
-    connection.query("SELECT * FROM usuarios",(error,results)=>{
+    connection.query("SELECT * FROM usuarios",
+    (error,results)=>{
+        if(error)
+        throw error;
+    response.status(200).json(results);
+    });
+};
+
+const getEmpleadoId= (request, response) => {
+    const id = request.params.id;
+    connection.query("SELECT * FROM usuarios WHERE Usuario_Id = ?",
+    [id],
+    (error,results)=>{
         if(error)
         throw error;
     response.status(200).json(results);
@@ -28,8 +40,8 @@ const postEmpleado = (request, response) => {
         );
     }else if (action === "update") {
         connection.query(
-            "UPDATE Usuarios SET Usuario_Nombre = ?, Usuario_Username = ?, Usuario_Correo = ?, Usuario_Puesto = ?, Usuario_Password WHERE Usuario_Id = ?",
-            [nombre, fecha, numper, nummesa, observaciones, id],
+            "UPDATE Usuarios SET Usuario_Nombre = ?, Usuario_Username = ?, Usuario_Correo = ?, Usuario_Puesto = ?, Usuario_Password = ? WHERE Usuario_Id = ?",
+            [nombre, username, correo, puesto, password, id],
             (error, results) => {
                 if (error)
                     throw error;
@@ -49,4 +61,4 @@ const delEmpleado = (request, response)=>{
     });
 };
 
-module.exports = { getEmpleados, delEmpleado, postEmpleado};
+module.exports = { getEmpleadoId, delEmpleado, postEmpleado, getEmpleados};

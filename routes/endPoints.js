@@ -1,7 +1,7 @@
 const express=require("express")
 const router = express.Router()
 const {login} = require('../controllers/loginController');
-const { getEmpleados, delEmpleado, postEmpleado } = require("../controllers/empleadoController");
+const { getEmpleados, delEmpleado, postEmpleado, getEmpleadoId } = require("../controllers/empleadoController");
 const { getCuentas, delCuentas, postCuentas } = require("../controllers/cuentaController");
 const { getMenus, delMenus, postMenus } = require("../controllers/menuController");
 const { getMovimientos, delMovimientos, postMovimientos } = require("../controllers/movimientoController");
@@ -16,6 +16,7 @@ router.post('/login',login);
 router.get('/getEmpleados', getEmpleados);
 router.delete('/delEmpleado/:id', delEmpleado);
 router.post('/postEmpleado', postEmpleado);
+router.get('/getEmpleadoId/:id', getEmpleadoId);
 
 //Cuentas
 router.get('/getCuentas', getCuentas);
