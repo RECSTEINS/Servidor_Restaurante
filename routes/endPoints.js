@@ -1,13 +1,13 @@
 const express=require("express")
 const router = express.Router()
 const {login} = require('../controllers/loginController');
-const { getEmpleados, delEmpleado, postEmpleado, getEmpleadoId } = require("../controllers/empleadoController");
+const { getEmpleados, delEmpleado, postEmpleado, getEmpleadoId, updateEmpleado } = require("../controllers/empleadoController");
 const { getCuentas, delCuentas, postCuentas } = require("../controllers/cuentaController");
 const { getMenus, delMenus, postMenus } = require("../controllers/menuController");
 const { getMovimientos, delMovimientos, postMovimientos } = require("../controllers/movimientoController");
 const { getPlatillos, delPlatillos, postPlatillos } = require("../controllers/platilloController");
 const { getProductos, delProductos, postProducto } = require("../controllers/productoController");
-const { getProveedores, delProveedores, postProveedores } = require("../controllers/proveedorController");
+const { getProveedores, delProveedores, postProveedores, getProveedorId, updateProveedor } = require("../controllers/proveedorController");
 const { getReservaciones, delReservaciones, postReservaciones } = require("../controllers/reservaController");
 
 router.post('/login',login);
@@ -17,6 +17,7 @@ router.get('/getEmpleados', getEmpleados);
 router.delete('/delEmpleado/:id', delEmpleado);
 router.post('/postEmpleado', postEmpleado);
 router.get('/getEmpleadoId/:id', getEmpleadoId);
+router.post('/updateEmpleado/:id', updateEmpleado);
 
 //Cuentas
 router.get('/getCuentas', getCuentas);
@@ -47,6 +48,8 @@ router.post('/postProducto', postProducto)
 router.get('/getProveedores', getProveedores);
 router.delete('/delProveedor/:id', delProveedores);
 router.post('/postProveedor', postProveedores);
+router.get('/getProveedorId/:id', getProveedorId);
+router.post('/updateProveedor/id', updateProveedor);
 
 //Reservaciones
 router.get('/getReservaciones', getReservaciones);
