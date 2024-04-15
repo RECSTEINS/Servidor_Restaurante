@@ -7,12 +7,45 @@ const {connection}= require ("../config/config.db");
 
 //Read
 const getProductos= (request, response) => {
-    connection.query("SELECT pr.Productos_Id, pr.Productos_Nombre, pr.Productos_Descripcion, pr.Productos_Tipo, pr.Productos_Precio, p.Proveedor_Id, p.Proveedor_Nombre, p.Proveedor_Activo FROM productos pr LEFT JOIN proveedores p ON pr.Productos_ProveedorID = p.Proveedor_Id;",(error,results)=>{
+    connection.query("SELECT * FROM productos",(error,results)=>{
         if(error)
         throw error;
     response.status(200).json(results);
     });
 };
+
+const getProductoId= (request, response) => {
+    const id = request.params.id;
+    connection.query("SELECT * FROM productos WHERE Productos_Id = ?",
+    [id],
+    (error,results)=>{
+        if(error)
+        throw error;
+    response.status(200).json(results);
+    });
+};
+
+const updateProducto = (request, response) => {
+    const id = request.params.id;
+    const { nombre, descripcion, tipo, precio, idProveedor } = request.body;
+
+    connection.query(
+        "UPDATE productos SET Productos_Nombre = ?, Productos_Descripcion = ?, Productos_Tipo = ?, Productos_Precio = ?, Productos_ProveedorID = ? WHERE Productos_Id = ?",
+        [nombre, descripcion, tipo, precio, idProveedor, id],
+        (error, results) => {
+            if (error) {
+                console.error("Error al actualizar el registro:", error);
+                response.status(500).json({ error: "Error interno del servidor" });
+            } else {
+                if (results.affectedRows > 0) {
+                    response.status(200).json({ message: "Registro actualizado correctamente" });
+                } else {
+                    response.status(404).json({ error: "Registro no encontrado" });
+                }
+            }
+        }
+    );
+}
 
 //Create, Update
 const postProducto = (request, response) => {
@@ -51,4 +84,4 @@ const delProductos = (request, response)=>{
     });
 };
 
-module.exports = {getProductos, postProducto, delProductos};
+module.exports = {getProductos, postProducto, delProductos, getProductoId, updateProducto};

@@ -14,6 +14,39 @@ const getPlatillos= (request, response) => {
     });
 };
 
+const getPlatilloId= (request, response) => {
+    const id = request.params.id;
+    connection.query("SELECT * FROM platillos WHERE Platillos_Id = ?",
+    [id],
+    (error,results)=>{
+        if(error)
+        throw error;
+    response.status(200).json(results);
+    });
+};
+
+const updatePlatillo = (request, response) => {
+    const id = request.params.id;
+    const { nombre, tipo, descripcion, precio} = request.body;
+
+    connection.query(
+        "UPDATE platillos SET Platillos_Nombre = ?, Platillos_Tipo = ?, Platillos_Descripcion = ?, Platillos_Precio = ?  WHERE Platillos_Id = ?",
+        [nombre, tipo, descripcion, precio, id],
+        (error, results) => {
+            if (error) {
+                console.error("Error al actualizar el registro:", error);
+                response.status(500).json({ error: "Error interno del servidor" });
+            } else {
+                if (results.affectedRows > 0) {
+                    response.status(200).json({ message: "Registro actualizado correctamente" });
+                } else {
+                    response.status(404).json({ error: "Registro no encontrado" });
+                }
+            }
+        }
+    );
+}
+
 //Create, Update
 const postPlatillos = (request, response) => {
     const { id, nombre, tipo, descripcion, precio, action } = request.body;
@@ -51,4 +84,4 @@ const delPlatillos = (request, response)=>{
     });
 };
 
-module.exports = {getPlatillos, postPlatillos, delPlatillos};
+module.exports = {getPlatillos, postPlatillos, delPlatillos, getPlatilloId, updatePlatillo};

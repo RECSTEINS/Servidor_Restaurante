@@ -14,6 +14,39 @@ const getReservaciones= (request, response) => {
     });
 };
 
+const getReservaId= (request, response) => {
+    const id = request.params.id;
+    connection.query("SELECT * FROM reservaciones WHERE Reservaciones_Id = ?",
+    [id],
+    (error,results)=>{
+        if(error)
+        throw error;
+    response.status(200).json(results);
+    });
+};
+
+const updateReserva = (request, response) => {
+    const id = request.params.id;
+    const { nombre, fecha, numper, nummesa, observaciones } = request.body;
+
+    connection.query(
+        "UPDATE reservaciones SET Reservaciones_Nombre = ?, Reservaciones_Fecha = ?, Reservaciones_NumPersonas = ?, Reservaciones_NoMesa = ?, Reservaciones_Observaciones  WHERE Reservaciones_Id = ?",
+        [nombre, fecha, numper, nummesa, observaciones, id],
+        (error, results) => {
+            if (error) {
+                console.error("Error al actualizar el registro:", error);
+                response.status(500).json({ error: "Error interno del servidor" });
+            } else {
+                if (results.affectedRows > 0) {
+                    response.status(200).json({ message: "Registro actualizado correctamente" });
+                } else {
+                    response.status(404).json({ error: "Registro no encontrado" });
+                }
+            }
+        }
+    );
+}
+
 //Create, Update
 const postReservaciones = (request, response) => {
     const { id, nombre, fecha, numper, nummesa, observaciones, action } = request.body;
@@ -52,4 +85,4 @@ const delReservaciones = (request, response)=>{
     });
 };
 
-module.exports = {getReservaciones, postReservaciones, delReservaciones};
+module.exports = {getReservaciones, postReservaciones, delReservaciones, getReservaId, updateReserva};
